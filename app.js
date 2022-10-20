@@ -50,13 +50,13 @@ function copyToClickboard(text) {
 // Копирование текста по клику
 
 // Установка цвета и названия
-function setRandomColors() {
-	const colors = []
-	cols.forEach((col) => {
+function setRandomColors(isInitial) {
+	const colors = isInitial ? getColorsFromHash() : []
+	cols.forEach((col, index) => {
 		const isLocked = col.querySelector('i').classList.contains('fa-lock') // Заносим в переменную все элементы у которых есть определнный клас
 		const text = col.querySelector('h2') // Заносим в переменную теги h2
 		const button = col.querySelector('button') // Заносим в переменную теги button
-		const color = gerenerateRandomColor() // Заносим в переменную функцию
+
 
 		// Если есть класс то он не меняется
 		if (isLocked) {
@@ -64,10 +64,16 @@ function setRandomColors() {
 			return
 		}
 
+		const color = isInitial 
+		? colors[index] 
+			? colors[index]
+			: chroma.random()
+		: chroma.random() // Заносим в переменную функцию
+
 		colors.push(color)
 
 		text.textContent = color
-		col.style.background = gerenerateRandomColor()
+		col.style.background = color
 
 		setTexColor(button, color)
 		setTexColor(text, color)
@@ -99,4 +105,4 @@ function getColorsFromHash() {
 	}
 	return []
 }
-setRandomColors()
+setRandomColors(true)
